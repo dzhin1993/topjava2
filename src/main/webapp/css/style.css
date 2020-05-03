@@ -31,3 +31,16 @@ tr:nth-child(even) {
 .excess {
     color: red;
 }
+input{
+    padding: 10px;
+    text-align: left;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif, serif;
+    font-size: 16px;
+    background: #d5eae8;
+}
+
+dt {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif, serif;
+    font-size: 18px;
+    font-weight: bold;
+}

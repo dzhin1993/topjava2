@@ -8,11 +8,14 @@
 </head>
 <body>
 <h1>Meals list</h1>
+<a href="meals?action=add"><img src="img/add.png"></a>
 <table>
         <tr>
             <td>date/time</td>
             <td>description</td>
             <td>calories</td>
+            <td>delete</td>
+            <td>edit</td>
         </tr>
     <c:forEach var="meal" items="${meals}">
         <jsp:useBean id="meal" class="ru.javawebinar.topjava.model.MealTo"/>
@@ -20,6 +23,8 @@
             <td><%=DateUtil.format(meal.getDateTime())%></td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
+            <td><a href="meals?id=${meal.id}&action=delete"><img src="img/delete.png"></a></td>
+            <td><a href="meals?id=${meal.id}&action=edit"><img src="img/pencil.png"></a></td>
         </tr>
     </c:forEach>
 </table>

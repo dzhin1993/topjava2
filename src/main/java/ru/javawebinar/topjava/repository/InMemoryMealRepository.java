@@ -28,7 +28,8 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public void save(Meal meal) {
-        storage.put(counter.incrementAndGet(), meal);
+        meal.setId(counter.incrementAndGet());
+        storage.put(counter.get(), meal);
     }
 
     @Override
