@@ -7,7 +7,6 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -50,7 +49,7 @@ public class InMemoryMealRepository implements MealRepository {
     public boolean delete(int userId, int mealId) {
         log.info("delete {} for user {}", mealId, userId);
         Map<Integer, Meal> mealMap = repository.get(userId);
-        return mealMap != null && mealMap.containsKey(mealId);
+        return mealMap != null && mealMap.remove(mealId) != null;
     }
 
     @Override
