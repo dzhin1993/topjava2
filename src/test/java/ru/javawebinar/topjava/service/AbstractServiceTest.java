@@ -7,7 +7,6 @@ import org.junit.rules.Stopwatch;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -46,9 +45,5 @@ abstract public class AbstractServiceTest {
                 throw getRootCause(e);
             }
         });
-    }
-
-    protected boolean checkJdbcProfile() {
-        return environment.acceptsProfiles(Profiles.of("jdbc"));
     }
 }
