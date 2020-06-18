@@ -16,25 +16,52 @@
             <span class="fa fa-plus"></span>
             <spring:message code="common.add"/>
         </button>
-        <form method="get" action="meals/filter">
-            <dl>
-                <dt><spring:message code="meal.startDate"/>:</dt>
-                <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
-            </dl>
-            <dl>
-                <dt><spring:message code="meal.endDate"/>:</dt>
-                <dd><input type="date" name="endDate" value="${param.endDate}"></dd>
-            </dl>
-            <dl>
-                <dt><spring:message code="meal.startTime"/>:</dt>
-                <dd><input type="time" name="startTime" value="${param.startTime}"></dd>
-            </dl>
-            <dl>
-                <dt><spring:message code="meal.endTime"/>:</dt>
-                <dd><input type="time" name="endTime" value="${param.endTime}"></dd>
-            </dl>
-            <button type="submit"><spring:message code="meal.filter"/></button>
-        </form>
+        <div class="card border-dark">
+            <div class="card card-body pb-0">
+                <form id="filter" method="get">
+                    <div class="row">
+                        <div class="offset-1">
+                            <dl>
+                                <dt><spring:message code="meal.startDate"/>:</dt>
+                                <dd><input class="form-control" type="date" name="startDate" value="${param.startDate}"></dd>
+                            </dl>
+                        </div>
+                        <div class="offset-1">
+                            <dl>
+                                <dt><spring:message code="meal.endDate"/>:</dt>
+                                <dd><input class="form-control" type="date" name="endDate" value="${param.endDate}"></dd>
+                            </dl>
+                        </div>
+                        <div class="offset-1">
+                            <dl>
+                                <dt><spring:message code="meal.startTime"/>:</dt>
+                                <dd><input class="form-control" type="time" name="startTime" value="${param.startTime}"></dd>
+                            </dl>
+                        </div>
+                        <div class="offset-2">
+                            <dl>
+                                <dt><spring:message code="meal.endTime"/>:</dt>
+                                <dd><input class="form-control" type="time" name="endTime" value="${param.endTime}"></dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="button p-1">
+                            <button type="button" class="btn btn-primary" onclick="filter()">
+                                <span class="fa fa-check"></span>
+                                <spring:message code="meal.filter"/>
+                            </button>
+                        </div>
+                        <div class="button p-1">
+                            <button type="button" class="btn btn-primary" onclick="updateTable()">
+                                <span class="fa fa-check"></span>
+                                <spring:message code="common.cancel"/>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
         <table class="table table-striped" id="datatable">
             <thead>
             <tr>
@@ -58,7 +85,6 @@
         </table>
     </div>
 </div>
-
 <div class="modal fade" tabindex="-1" id="editRow">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -102,7 +128,6 @@
         </div>
     </div>
 </div>
-
 <jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>

@@ -33,3 +33,13 @@ $(function () {
         }
     );
 });
+
+function filter() {
+    $.ajax({
+        type: "GET",
+        url:  context.ajaxUrl + 'filter',
+        data: $("#filter").serialize()
+    }).done(function (data) {
+        updateWithData(data);
+    });
+}

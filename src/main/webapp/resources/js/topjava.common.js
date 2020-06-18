@@ -31,8 +31,12 @@ function deleteRow(id) {
 
 function updateTable() {
     $.get(context.ajaxUrl, function (data) {
-        context.datatableApi.clear().rows.add(data).draw();
+        updateWithData(data)
     });
+}
+
+function updateWithData(data) {
+    context.datatableApi.clear().rows.add(data).draw();
 }
 
 function save() {
