@@ -40,3 +40,12 @@ $(function () {
         }
     );
 });
+
+function disable(id) {
+    $.ajax({
+        type: "PUT",
+        url:  context.ajaxUrl + id
+    }).done(function () {
+        updateTable();
+    });
+}
