@@ -128,12 +128,12 @@ class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void createWithLocation2() throws Exception {
-        Meal newMeal = MealTestData.getNew();
-        newMeal.setDescription("");
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
+    void validation() throws Exception {
+        perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newMeal))
-                .with(userHttpBasic(USER)));
+                .content(JsonUtil.writeValue(new Meal()))
+                .with(userHttpBasic(USER)))
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(print());
     }
 }
