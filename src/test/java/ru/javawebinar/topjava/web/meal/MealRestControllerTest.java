@@ -126,4 +126,14 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MEAL_TO_MATCHER.contentJson(getTos(MEALS, USER.getCaloriesPerDay())));
     }
+
+    @Test
+    void createWithLocation2() throws Exception {
+        Meal newMeal = MealTestData.getNew();
+        newMeal.setDescription("");
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(newMeal))
+                .with(userHttpBasic(USER)));
+    }
 }

@@ -1,16 +1,18 @@
 package ru.javawebinar.topjava.util;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.javawebinar.topjava.HasId;
+import ru.javawebinar.topjava.util.exception.ErrorType;
 import ru.javawebinar.topjava.util.exception.IllegalRequestDataException;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.*;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ValidationUtil {
+    private static Logger log = LoggerFactory.getLogger(ValidationUtil.class);
 
     private ValidationUtil() {
     }
@@ -78,11 +80,11 @@ public class ValidationUtil {
         }
     }
 
-    public static ResponseEntity<String> getErrorResponse(BindingResult result) {
-        return ResponseEntity.unprocessableEntity().body(
-                result.getFieldErrors().stream()
-                        .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))
-                        .collect(Collectors.joining("<br>"))
-        );
+    public static void logException(ErrorType errorType, HttpServletRequest req, Throwable rootCause, boolean logException) {
+        if (logException) {
+            log.error(errorType + " at request " + req.getRequestURL(), rootCause);
+        } else {
+            log.warn("{} at request  {}: {}", errorType, req.getRequestURL(), rootCause.toString());
+        }
     }
 }
