@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,21 +15,25 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import ru.javawebinar.topjava.util.ValidationUtil;
 import ru.javawebinar.topjava.util.exception.ErrorInfo;
 import ru.javawebinar.topjava.util.exception.ErrorType;
 import ru.javawebinar.topjava.util.exception.IllegalRequestDataException;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
-import static ru.javawebinar.topjava.util.ValidationUtil.logException;
 import static ru.javawebinar.topjava.util.exception.ErrorType.*;
 
 @RestControllerAdvice(annotations = RestController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class ExceptionInfoHandler {
+    private static final Logger log = LoggerFactory.getLogger(ValidationUtil.class);
+
+    public static final Map<String, String> duplicateMessages = Map.of("email", "User with this email already exists");
 
     //  http://stackoverflow.com/a/22358422/548473
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
@@ -39,7 +45,12 @@ public class ExceptionInfoHandler {
     @ResponseStatus(value = HttpStatus.CONFLICT)  // 409
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
-        return logAndGetErrorInfo(req, e, true, DATA_ERROR);
+        String message = e.getMessage();
+        if (message != null && message.contains("users_unique_email_idx")) {
+            return logAndGetErrorInfo(req, new Exception(duplicateMessages.get("email")), true, DATA_ERROR);
+        } else {
+            return logAndGetErrorInfo(req, e, true, DATA_ERROR);
+        }
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422
@@ -71,7 +82,11 @@ public class ExceptionInfoHandler {
     //    https://stackoverflow.com/questions/538870/should-private-helper-methods-be-static-if-they-can-be-static
     private static ErrorInfo logAndGetErrorInfo(HttpServletRequest req, Exception e, boolean logException, ErrorType errorType) {
         Throwable rootCause = getRootCause(e);
-        logException(errorType, req, rootCause, logException);
+        if (logException) {
+            log.error(errorType + " at request " + req.getRequestURL(), rootCause);
+        } else {
+            log.warn("{} at request  {}: {}", errorType, req.getRequestURL(), rootCause.toString());
+        }
         return new ErrorInfo(req.getRequestURL(), errorType, rootCause.getMessage());
     }
 }
