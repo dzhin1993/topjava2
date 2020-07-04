@@ -33,7 +33,9 @@ import static ru.javawebinar.topjava.util.exception.ErrorType.*;
 public class ExceptionInfoHandler {
     private static final Logger log = LoggerFactory.getLogger(ValidationUtil.class);
 
-    public static final Map<String, String> duplicateMessages = Map.of("email", "User with this email already exists");
+    public static final Map<String, String> duplicateMessages = Map.of(
+            "email", "User with this email already exists",
+            "meals", "Meal with this date and time already exists");
 
     //  http://stackoverflow.com/a/22358422/548473
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
@@ -46,11 +48,14 @@ public class ExceptionInfoHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ErrorInfo conflict(HttpServletRequest req, DataIntegrityViolationException e) {
         String message = e.getMessage();
-        if (message != null && message.contains("users_unique_email_idx")) {
-            return logAndGetErrorInfo(req, new Exception(duplicateMessages.get("email")), true, DATA_ERROR);
-        } else {
-            return logAndGetErrorInfo(req, e, true, DATA_ERROR);
+        if (message != null) {
+            if (message.contains("users_unique_email_idx")) {
+                return logAndGetErrorInfo(req, new Exception(duplicateMessages.get("email")), true, DATA_ERROR);
+            } else if (message.contains("meals_unique_user_datetime_idx")) {
+                return logAndGetErrorInfo(req, new Exception(duplicateMessages.get("meals")), true, DATA_ERROR);
+            }
         }
+        return logAndGetErrorInfo(req, e, true, DATA_ERROR);
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422

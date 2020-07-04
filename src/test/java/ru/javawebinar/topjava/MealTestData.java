@@ -26,6 +26,8 @@ public class MealTestData {
     public static final Meal ADMIN_MEAL1 = new Meal(ADMIN_MEAL_ID, of(2020, Month.JANUARY, 31, 14, 0), "Админ ланч", 510);
     public static final Meal ADMIN_MEAL2 = new Meal(ADMIN_MEAL_ID + 1, of(2020, Month.JANUARY, 31, 21, 0), "Админ ужин", 1500);
 
+    public static final String DUPLICATE_MEAL_MESSAGE = "{\"url\":\"http://localhost/rest/profile/meals/\",\"type\":\"DATA_ERROR\",\"detail\":\"Meal with this date and time already exists\"}";
+
     public static final List<Meal> MEALS = List.of(MEAL7, MEAL6, MEAL5, MEAL4, MEAL3, MEAL2, MEAL1);
 
     public static Meal getNew() {

@@ -22,6 +22,8 @@ public class UserTestData {
     public static final User USER = new User(USER_ID, "User", "user@yandex.ru", "password", 2005, Role.USER);
     public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", 1900, Role.ADMIN, Role.USER);
 
+    public static final String DUPLICATE_MAIL_MESSAGE = "{\"url\":\"http://localhost/rest/admin/users/\",\"type\":\"DATA_ERROR\",\"detail\":\"User with this email already exists\"}";
+
     public static User getNew() {
         return new User(null, "New", "new@gmail.com", "newPass", 1555, false, new Date(), Collections.singleton(Role.USER));
     }
