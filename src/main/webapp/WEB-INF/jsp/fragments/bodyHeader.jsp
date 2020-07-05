@@ -28,3 +28,5 @@
         </sec:authorize>
     </div>
 </nav>
+<a href="?lang=en">Eng</a>
+<a href="?lang=ru">Ru</a>
